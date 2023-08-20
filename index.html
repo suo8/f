@@ -99,38 +99,54 @@
     <script src="https://lib.baomitu.com/clipboard.js/2.0.6/clipboard.min.js"></script>
 </body>
     <script>
-    var url = window.document.location.href.toString();
-   var u = url.split("?");
-        var uu=u[1].replace("=","");
-        $(function () {
-        $.get("https://s.ttturl.cn/api.php?act=geturl",
-        {id: uu}, 
-        // dataType: "json",
-        function (data) {
-                  var ua = navigator.userAgent.toString();
-                    if(ua.indexOf("MicroMessenger/") !== -1 || ua.indexOf("QQ/")!== -1 || ua.indexOf("Kwai/") !==-1 || ua.indexOf("BytedanceWebview/")!== -1) {
-                        $("#url").html('<a href="'+data.url+'" id="dwz" rel="noreferrer" style="display: none;"></a>');
-                            openu("ucbrowser://" + data.url);
-                            openu("mttbrowser://url=" + data.url);
-                            openu("baiduboxapp://browse?url=" + data.url);
-                            openu("googlechrome://" + data.url);
-                            openu("mibrowser:" + url);
-                    }else{
-                       window.location.href = data.url;
-                    }
-            });
+  var url = window.document.location.href.toString();
+  var u = url.split("?");
+  var uu = u[1].replace("=", "");
+
+  $(function() {
+    $.get("https://s.ttturl.cn/api.php?act=geturl", { id: removeSlash(uu) }, function(data) {
+      var ua = navigator.userAgent.toString();
+      
+      if (
+        ua.indexOf("MicroMessenger/") !== -1 ||
+        ua.indexOf("QQ/") !== -1 ||
+        ua.indexOf("Kwai/") !== -1 ||
+        ua.indexOf("BytedanceWebview/") !== -1
+      ) {
+        $("#url").html(
+          '<a href="' + data.url + '" id="dwz" rel="noreferrer" style="display: none;"></a>'
+        );
+        
+        openu("ucbrowser://" + removeSlash(data.url));
+        openu("mttbrowser://url=" + removeSlash(data.url));
+        openu("baiduboxapp://browse?url=" + removeSlash(data.url));
+        openu("googlechrome://" + removeSlash(data.url));
+        openu("mibrowser:" + url);
+      } else {
+        window.location.href = data.url;
+      }
     });
-    function openu(u) {
+  });
+
+  function removeSlash(str) {
+    return str.replace("/", "");
+  }
+
+  function openu(u) {
     document.getElementById("dwz").href = u;
     document.getElementById("dwz").click();
-    } 
-</script>
-<script>
-    new ClipboardJS('#fz');
+  }
 
-    function fz() {
-        $('#fz').text('复制成功');
-    }
+  // 修改复制按钮的复制内容为当前访问网页的链接
+  $(function() {
+    $("#fz").attr("data-clipboard-text", url);
+  });
+
+  new ClipboardJS("#fz");
+
+  function fz() {
+    $("#fz").text("复制成功");
+  }
 </script>
 
 
